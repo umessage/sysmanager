@@ -1,0 +1,4 @@
+{% comment %} CSS {% endcomment %}
+<link rel="stylesheet" type="text/css" href="/media/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/media/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="/media/bootstrap/css/docs.css" />

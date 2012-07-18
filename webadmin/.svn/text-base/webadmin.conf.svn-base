@@ -1,0 +1,28 @@
+WSGISocketPrefix /tmp/managent
+<VirtualHost *:80>
+    WSGIScriptAlias / /opt/managent/webadmin/webadmin.wsgi
+    WSGIDaemonProcess horizon user=www-data group=www-data processes=3 threads=10
+    SetEnv APACHE_RUN_USER www-data
+    SetEnv APACHE_RUN_GROUP www-data
+    WSGIProcessGroup horizon
+
+    DocumentRoot /opt/managent/.blackhole/
+    Alias /media/ /opt/managent/webadmin/media/
+    Alias /static/ /opt/managent/webadmin/static/
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /opt/managent>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    ErrorLog /var/log/httpd/error.log
+    LogLevel warn
+    CustomLog /var/log/httpd/access.log combined
+</VirtualHost>

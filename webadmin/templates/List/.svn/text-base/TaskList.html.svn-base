@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% block context %}
+<section id="typography">
+        <div class="page-header"></div>
+<div class="container">
+<div class="row">
+        <div class="span12">
+          {% if 'core.view_task' in UserPerm.get_all_permissions %}
+                {% if ObjList %}
+                        <table class="table table-bordered table-striped" >
+                                <tr>
+                                        <td>任务名称</td>
+                                        <td>执行时间</td>
+                                        <td>执行用户</td>
+                                        <td>部署方式</td>
+                                        <td>rev</td>
+                                        <td>版本</td>
+                                        <td>察看日志</td>
+                                </tr>
+                        {% for HPlist in ObjList %}
+                                <tr>
+                                        <td>{{ HPlist.name }}</td>
+                                        <td>{{ HPlist.time }}</td>
+										<td>{{ HPlist.owner }}</td>
+										<td>{{ HPlist.deploy_func }}</td>
+										<td>{{ HPlist.rev }}</td>
+										<td>{{ HPlist.version }}</td>
+										<td><a target="_blank" href="{% url webadmin.core.views.view_log HPlist.id %}" class="btn btn-info">查看日志</a></td>
+                                </tr>
+                        {% endfor %}
+                        </table>
+                {% else %}
+                        <table class="table table-bordered table-striped" >
+                        <tr>
+                        <td>没有数据</td>
+                        </tr>
+                        </table>
+                {% endif %}
+		  {% else %}
+			<p> 您无权访问 </p>
+		{% endif %}
+        </div>
+</div>
+</div>
+</section>
+{% endblock %}

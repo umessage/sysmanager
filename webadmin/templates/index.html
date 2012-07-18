@@ -1,0 +1,81 @@
+<title>Polling Test</title>
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.2.min.js'></script>
+<script>
+
+function inc_fetch(url, onmsg, onclose) {
+    var pos = 0;
+
+    var get_new_data = function(rsp) {
+        var prev = pos;
+        pos = rsp.length;
+        return rsp.substring(prev);
+    }
+
+    var client = new XMLHttpRequest();
+    client.onreadystatechange = function() {
+        if (this.readyState == 3) {
+            //console.debug("onreadystatechange: status="+this.status+", readyState="+this.readyState);
+            onmsg(get_new_data(this.responseText));
+        }
+        else if (this.readyState == 4 && onclose) {
+            onclose();
+        }
+    };
+    client.open("GET", url);
+    client.send();
+}
+
+function add_line(msg) {
+    var line = $('<div class="output">').text(msg);
+    if (msg.match(/^\[.*\] Executing task/)) {
+        line.css('background-color', 'lightSteelBlue');
+    }
+    $('.stdout').append(line);
+    scrollTo(line.offset().left, line.offset().top);
+}
+
+buf = '';
+function echo(msg) {
+    msg = buf + msg;
+    buf = '';
+
+    var pos = msg.lastIndexOf('\n');
+    if (pos == -1) {
+        buf = msg;
+        return;
+    }
+
+    msg = msg.substring(0, pos+1);
+    buf = msg.substring(pos+1);
+
+    var lines = msg.split('\n');
+    for (var i=0; i<lines.length; ++i)
+	add_line(lines[i]);
+}
+
+function onclose() {
+    if (buf != '') {
+        add_line(buf);
+        buf = '';
+    }
+    add_line(">>>");
+}
+
+function term() {
+    $.get('/term', function(data) {
+        add_line(data);
+    });
+}
+
+</script>
+
+
+<h1>Terminal</h1>
+<div class='stdout'></div>
+
+<input id='start' type='button' value='start' onclick='inc_fetch("/poll", echo, onclose)' />
+<input id='term' type='button' value='term' onclick='term()' />
+
+<script>
+</script>
+

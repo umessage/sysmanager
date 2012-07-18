@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="container">
+	<head class="jumbotron subhead" id="overview">
+		<h1>Logo</h1>
+		<p class="lead">运维管理平台</p>
+		<div class="subnav">
+			<ul class="nav nav-pills">
+				<li><a href="/">主页</a></li>
+				<li class="dropdown" id="menu1">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="menu1">项目信息<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+						<li><a href="/current_proj/">当前项目</a></li>
+						<li><a href="/history_proj/">历史项目</a></li>
+				</ul>
+				</li>
+				<li><a href="/host/">机器信息</a></li>
+				<li><a href="/idc/">机房信息</a></li>
+				<li><a href="/ip/">地址信息</a></li>
+                <li><a href="/user/">用户信息</a></li>
+			</ul>
+		</div>
+</div>	

@@ -1,0 +1,82 @@
+{% extends "_base.html" %}
+aox% load i18n %}
+{% block context %}
+<section id="typography">
+        <div class="page-header"></div>
+<div class="container">
+<div class="row">
+        <div class="span12">
+		{% if 'core.add_proj' in UserPerm.get_all_permissions or 'core.change_proj' in UserPerm.get_all_permissions or 'core.delete_proj' in UserPerm.get_all_permissions or 'core.view_proj' in UserPerm.get_all_permissions or 'core.exec_proj' in UserPerm.get_all_permissions %}
+          {% if 'core.view_proj' in UserPerm.get_all_permissions %}
+              {% if 'core.add_proj' in UserPerm.get_all_permissions %}
+                <a href="{% url webadmin.core.views.add_proj %}" class="btn btn-warning">添加</a>
+			  {% endif %}
+              {% if 'core.exec_proj' in UserPerm.get_all_permissions %}
+                <input type="submit" class="btn btn-success" value="执行" onclick="get_value()">
+		      {% endif %}
+                {% if ObjList %}
+                        <table class="table table-bordered table-striped" >
+                                <tr>
+										<td></td>
+                                        <td>项目名称</td>
+                                        <td>项目目录</td>
+                                        <td>项目用户</td>
+                                        <td>版本模块</td>
+										<td>部署方式</td>
+										<td>版本号</td>
+										<td>操作</td>
+                                </tr>
+                        {% for Plist in ObjList %}
+                                <tr>
+										<td><input type="checkbox" name="Plist" value="{{ Plist.name }}"></td>
+                                        <td>{{ Plist.name }}</td>
+                                        <td>{{ Plist.home }}</td>
+                                        <td>{{ Plist.owner }}</td>
+                                        <td>{{ Plist.cvs_model }}</td>
+						                <td><select name="{{ Plist.name }}">
+                        					<option value="setup">全新部署</option>
+                        					<option value="deploy">部署</option>
+                       						<option value="ideploy">增量部署</option>
+                       						<option value="rollback">回滚到上一版本</option>
+                       						<option value="exterminate">清理项目</option>
+                       						</select>
+										<td><input  type="text" name="{{ Plist.name }}"></td>
+										<td>
+										{% if 'core.change_proj' in UserPerm.get_all_permissions %}
+										<a href="{% url webadmin.core.views.edit_proj Plist.id %}" class="btn btn-warning">编辑</a>
+										{% endif %}
+										{% if 'core.delete_proj' in UserPerm.get_all_permissions %}
+										    <a href="{% url webadmin.core.views.del_proj Plist.id %}" class="btn btn-danger">删除</a>
+										{% endif %}
+										</td>
+                                </tr>
+                        {% endfor %}
+                        </table>
+                {% else %}
+                        <table class="table table-bordered table-striped" >
+                        <tr>
+                        <td>没有数据</td>
+                        </tr>
+                        </table>
+                {% endif %}
+			{% endif %}
+		{% else %}
+			<p> 您无权访问 </p>
+		{% endif %}
+        </div>
+</div>
+</div>
+<div id="overlay" class="modal-backdrop fade in hide"></div>
+<div id="myModal" class="modal hide fade in">
+    <div class="modal-header">
+        <h3>执行过程</h3>
+    </div>
+    <div class="modal-body">
+        <p id="myp"></p>
+    </div>
+    <div class="modal-footer">
+       <a id="close" class="btn" href="/current_proj/">Close</a>
+</div>
+</div>
+</section>
+{% endblock %}

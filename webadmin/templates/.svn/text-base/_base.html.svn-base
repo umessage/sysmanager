@@ -1,0 +1,33 @@
+{% load i18n %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+		<title>{% block title %}{% endblock %}</title>
+		{% block css %}
+			{% include "_css.html" %}
+		{% endblock %}
+		{% block js %}
+		{% endblock %}
+	</head>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+	{% block navbar %}
+		{% include "_navbar.html" %}
+	{% endblock %}
+	
+	{% block menu %}
+		{% include "_menu.html" %}
+	{% endblock %}
+
+	{% block context %}
+	{% endblock %}
+
+	{% block script %}
+		{% include "_js.html" %}
+	{% endblock %}
+
+	{% block footer %}
+		{% include "_footer.html" %}
+	{% endblock %}
+</body>
+</html>

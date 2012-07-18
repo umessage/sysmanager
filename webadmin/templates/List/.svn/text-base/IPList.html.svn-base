@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% block context %}
+<section id="typography">
+	<div class="page-header"></div>
+<div class="container">
+<div class="row">
+	<div class="span12">
+	{% if 'core.add_ip' in UserPerm.get_all_permissions or 'core.change_ip' in UserPerm.get_all_permissions or 'core.delete_ip' in UserPerm.get_all_permissions or 'core.view_ip' in UserPerm.get_all_permissions %}
+	 {% if 'core.view_ip' in UserPerm.get_all_permissions %}
+		 {% if 'core.add_ip' in UserPerm.get_all_permissions %}
+			<a href="{% url webadmin.core.views.add_ip %}" class="btn btn-warning">添加</a>
+		 {% endif %}
+		{% if ObjList %}
+			<table class="table table-bordered table-striped" >
+				<tr>
+					<td>IP地址</td>
+					<td>网络接口</td>
+					<td>操作</td>
+				</tr>
+			{% for IPlist in ObjList %}
+				<tr>
+					<td>{{ IPlist.addr }}</td>
+					<td>{{ IPlist.interface }}</td>
+					<td>
+					{% if 'core.change_ip' in UserPerm.get_all_permissions %}
+					    <a href="{% url webadmin.core.views.edit_ip IPlist.id %}" class="btn btn-warning">编辑</a>
+					{% endif %}
+					{% if 'core.delete_ip' in UserPerm.get_all_permissions %}
+					    <a href="{% url webadmin.core.views.del_ip IPlist.id %}" class="btn btn-danger">删除</a>
+					{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		{% else %}
+			<table class="table table-bordered table-striped" >
+			<tr>
+			<td>没有数据</td>
+			</tr>
+			</table>
+		{% endif %}
+	 {% endif %}
+	{% else %}
+		<p> 您无权访问 </p>
+	{% endif %}
+	</div>
+</div>
+</div>
+</section>
+{% endblock %}
+

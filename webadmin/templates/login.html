@@ -1,0 +1,40 @@
+﻿<!DOCTYPE HTML>
+{% load url from future %}
+{% block content %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>sysadmin login</title>
+    <link rel="stylesheet" href="http://s.k8e.net/static/css/bootstrap.css">
+    <link rel="stylesheet" href="http://s.k8e.net/static/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="http://s.k8e.net/static/css/docs.css">
+    <script src="http://s.k8e.net/static/css/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+
+    <header class="jumbotron masthead">
+        <div class="inner">
+            <h1>SysAdmin</h1>
+        </div>
+    </header>
+    <div class="row">
+        <div class="span12">
+        {% if form.errors %}
+            <div class="alert alert-error">Your username and password didn't match. Please try again.</div>
+        {% endif %}
+        <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="well form-inline">
+            {% csrf_token %}
+            {{ form.username.label_tag }} : 
+            {{ form.username }}
+            {{ form.password.label_tag }} :
+            {{ form.password }}
+            <input type="submit" value="login" />
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+{% endblock %}﻿

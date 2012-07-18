@@ -1,0 +1,56 @@
+{% comment %} javascript {% endcomment %}
+<script src="/media/bootstrap/js/jquery.min.js"></script>
+<script src="/media/bootstrap/js/bootstrap.js"></script>
+<script src="/media/bootstrap/js/jquery.sparkline.min.js"></script>
+<script src="/media/bootstrap/js/bootstrap-alert.js"></script>
+<script src="/media/bootstrap/js/jquery.form.js"></script>
+<script>
+function get_value() {
+   var carray = new Array();
+   var sarray = new Array();
+   var varray = new Array();
+
+  $("input[type='checkbox']:checked").each(function(i,j){
+      carray[i] = this.value;
+      sarray[i] = $("select[name=" + "'" + carray[i] + "'" + "]").val();
+      varray[i] = $("input[name=" + "'" + carray[i] + "'" + "]").val();
+   });
+
+   if (carray.length == 0)
+   {
+      alert('请选择任务');
+      return;
+   }
+
+   document.getElementById('overlay').style.display="block"
+   document.getElementById('myModal').style.display="block"
+   document.getElementById('close').style.display="none"
+   for (i=0;i<carray.length;i++)
+   {
+        pname = carray[i];
+        $('#myp').ajaxSend(function(e,xhr,opt){
+            $(this).html('正在执行: ' + carray[i] + '<br>');
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '/exec_proj/?Plist=' + carray[i] + '&func=' + sarray[i] + '&version=' + varray[i],
+            datatype: 'html',
+            success: function(e, opt, xhr){
+                if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText == 'None'){
+                    document.getElementById('myp').innerHTML+=pname + '执行成功' + '<br>'
+                }
+                else if (xhr.readyState == 4 && (xhr.status != 200 || xhr.responseText == 'error')){
+                    document.getElementById('myp').innerHTML+=pname + '任务执行失败,详情察看日志' + '<br>'
+                }
+            },
+            error: function(){
+                document.getElementById('myp').innerHTML+=pname + '任务执行失败' + '<br>'
+            }
+            
+        });
+              
+   }
+  document.getElementById('close').style.display="inline-block"
+}
+</script>

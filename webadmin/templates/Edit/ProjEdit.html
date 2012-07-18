@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% block context %}
+<div class="container">
+<div class="row">
+    <div class="span12">
+<form class="form-vertical" action="" method="POST"> {% csrf_token %}
+  {{form.as_p}}
+  <tr>
+    <p><td colspan="2" align="right"><input class="btn btn-info" type="submit" value="Save"/></td></p>
+  </tr>
+</div>
+</div>
+</div>
+</form>
+{% endblock %}

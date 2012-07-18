@@ -1,0 +1,54 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% block context %}
+<section id="typography">
+	<div class="page-header"></div>
+<div class="container">
+<div class="row">
+	<div class="span12">
+	{% if 'auth.add_user' in UserPerm.get_all_permissions or 'auth.change_user' in UserPerm.get_all_permissions or 'auth.delete_user' in UserPerm.get_all_permissions %}
+		{% if 'auth.add_user' in UserPerm.get_all_permissions %}
+				<a href="{% url webadmin.core.views.add_user %}" class="btn btn-warning">添加</a>
+		{% endif %}
+		{% if ObjList %}
+			<table class="table table-bordered table-striped" >
+				<tr>
+					<td>用户名</td>
+					<td>是否激活</td>
+					<td>操作</td>
+				</tr>
+			{% for Ulist in ObjList %}
+				<tr>
+					<td>{{ Ulist.username }}</a></td>
+					{% if Ulist.is_active %}
+						<td><span class="label label-success">激活</span></td>
+					{% else %}
+						<td><span class="label label-warning">禁用</span></td>
+					{% endif %}
+					<td>
+					{% if 'auth.change_user' in UserPerm.get_all_permissions %}
+					<a href="{% url webadmin.core.views.edit_user Ulist.id %}">编辑</a>    <a href="{% url webadmin.core.views.no_active Ulist.id %}">禁用</a>    <a href="{% url webadmin.core.views.active Ulist.id %}">启用</a>    <a href="{% url webadmin.core.views.change_password Ulist.id %}">修改密码</a>
+					{% endif %}
+					{% if 'auth.delete_user' in UserPerm.get_all_permissions %}
+					<a href="{% url webadmin.core.views.del_user Ulist.id %}">删除</a>
+					{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		{% else %}
+			<table class="table table-bordered table-striped" >
+			<tr>
+			<td>没有数据</td>
+			</tr>
+			</table>
+		{% endif %}
+	{% else %}
+		<p> 您无权查看 </p>
+	{% endif %}
+	</div>
+</div>
+</div>
+</section>
+{% endblock %}
+
